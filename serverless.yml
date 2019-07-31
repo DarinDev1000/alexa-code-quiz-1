@@ -10,27 +10,28 @@ plugins:
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: prod
+  region: us-east-1
+  stage: dev
   profile: default
 
 custom:
   alexa:
     # Step 1: Run `sls alexa auth` to authenticate
-    # Step 2: Run `sls alexa create --name "Serverless Alexa Typescript" --locale en-US --type custom` to create a new skill
+    # Step 2: Run `sls alexa create --name "Code Quiz 1" --locale en-US --type custom` to create a new skill
     skills:
       # Step 3: Paste the skill id returned by the create command here:
-      - id: amzn1.ask.skill.xxxx-xxxx-xxxx-xxxx-xxxx
+      - id: ${file(env.yml):SKILL_ID}
         manifest:
           publishingInformation:
             locales:
               en-US:
-                name: Serverless Alexa Typescript
+                name: Code Quiz 1
           apis:
             custom:
               endpoint:
                 # Step 4: Do your first deploy of your Serverless stack
                 # Step 5: Paste the ARN of your lambda here:
-                uri: arn:aws:lambda:[region]:[account-id]:function:[function-name]
+                uri: ${file(env.yml):ENDPOINT_URI}
                 # Step 6: Run `sls alexa update` to deploy the skill manifest
                 # Step 7: Run `sls alexa build` to build the skill interaction model
                 # Step 8: Enable the skill in the Alexa app to start testing.
